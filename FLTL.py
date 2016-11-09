@@ -2,10 +2,16 @@
 # coding=utf-8
 
 import socket
+
+import main_loop
+
 PORT = 9090              # Arbitrary non-privileged port
 
 sock = socket.socket()
 sock.connect(('localhost', PORT))   # подключение к серверу
+
+print main_loop.run_game()
+
 sock.send('wasdfsdf')
 
 data = sock.recv(1024)
