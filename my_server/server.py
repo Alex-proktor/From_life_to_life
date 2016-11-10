@@ -25,7 +25,6 @@ def search_client():
     sock.listen(1)  # размер очереди
     conn, addr = sock.accept()  # новый сокет и адрес клиента
 
-
     if addr:
         client = True
         # print 'connected:', addr
@@ -35,20 +34,26 @@ def search_client():
 
 # search_client()
 
+begin_time = time.time()
+
 while True:
     if search_client(): # Клиент найден
         print "search client:",  addr
         data = conn.recv(1024)  # читаем порциями по 1024 байт (или 1 кб)
+        print "got: " + data
         if not data:
             print(u"Нет данных")
             # break
-        conn.send(data.upper()) # возвращает в виде строки в верхнем регистре
+        data = int(data) + 1
+        print "Gave: " + str(data)
+        conn.send(str(data)) # Send data
     else:
         search_client()
 
     time.sleep(1)
 
 conn.close()    # закрываем соединение
+print "Server closed the connection."
 
 
 

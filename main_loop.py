@@ -1,23 +1,29 @@
 #!/usr/bin/env python
 # coding=utf-8
 
+import socket
+
 import time
 import pygame
 from pygame.sprite import Group
 
+import Config as cfg
 from settings import Settings
 from game_stats import GameStats
-# from scoreboard import Scoreboard
 from button import Button
-# from ship import Ship
 import game_functions as gf
 
-time_out = 0.5  # Задержка обновления экрана
+PORT = int(cfg.server_connection().getPORT())              # Arbitrary non-privileged port
+
+time_out = 0.1  # Delay refresh (1 = 1 sec)
 turn_time = 0
+age = 0
 
 def run_game():
     # Initialize pygame, settings, and screen object.
     global turn_time
+    global age
+
     pygame.init()
     FLTL_settings = Settings()
     screen = pygame.display.set_mode(
@@ -49,23 +55,35 @@ def run_game():
         gf.check_events(FLTL_settings, screen, stats, play_button)
 
         if stats.game_active:
-            # pass
             # Make the Time button.
-            turn_time = int(time.time() - begin_time)
-            print 60 - turn_time
+            turn_time = int(time.clock())
+            # print 60 - turn_time
+            # print int(turn_time)
 
             time_button = Button(FLTL_settings, screen, str(60 - turn_time))
             time_button.draw_button()
             pygame.display.flip()
-        #     # ship.update()
-        #     gf.update_bullets(FLTL_settings, screen, stats, aliens,
-        #         bullets)
-        #     gf.update_aliens(FLTL_settings, screen, stats, aliens,
-        #         bullets)
 
         gf.update_screen(FLTL_settings, screen, stats, play_button)
+
+        # Every 60 sec to send date server.
+        if turn_time >= 60:
+            sock = socket.socket()
+            sock.connect(('localhost', PORT))  # Connection to server
+            sock.sendall(str(age))
+
+            Data = sock.recv(4096)
+
+            print "Age: " + Data
+            turn_time = int(time.clock())
+
+            Data = int(Data)
+            sock.close()
+
         time.sleep(time_out)
-    return turn_time
+
+    print "The client disconnected"
+    # return turn_time
 
 
 if __name__ == "__main__":
