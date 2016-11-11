@@ -3,6 +3,10 @@ from time import sleep
 
 import pygame
 
+import Config as cfg
+from settings import Settings
+from button import Button
+
 def check_keydown_events(event, FLTL_settings, screen):
     """Respond to keypresses."""
     if event.key == pygame.K_RIGHT:
@@ -23,34 +27,36 @@ def check_keyup_events(event):
     #     ship.moving_left = False
     pass
 
-def check_events(FLTL_settings, screen, stats, play_button):
+def check_events(DispWind):
     """Respond to keypresses and mouse events."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            cfg.check_events().setGameActive("False")
             sys.exit()
-        elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, FLTL_settings, screen)
-        elif event.type == pygame.KEYUP:
-            check_keyup_events(event)
+        # elif event.type == pygame.KEYDOWN:
+        #     check_keydown_events(event, FLTL_settings, screen)
+        # elif event.type == pygame.KEYUP:
+        #     check_keyup_events(event)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(FLTL_settings, screen, stats, play_button,
-                mouse_x, mouse_y)
+            check_play_button(Settings(), DispWind, mouse_x, mouse_y)
             
-def check_play_button(FLTL_settings, screen, stats, play_button,
-        mouse_x, mouse_y):
+def check_play_button(FLTL_settings, DispWind, mouse_x, mouse_y):
     """Start a new game when the player clicks Play."""
+    play_button = Button(FLTL_settings, DispWind, "Play")
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
-    if button_clicked and not stats.game_active:
+    if button_clicked and cfg.check_events().getGameActive() == "False":
         # Reset the game settings.
         FLTL_settings.initialize_dynamic_settings()
         
         # Hide the mouse cursor.
         # pygame.mouse.set_visible(False)
-        
+
         # Reset the game statistics.
-        stats.reset_stats()
-        stats.game_active = True
+        cfg.check_events().setGameActive("True")
+
+        # button_clicked.
+        # cfg.check_events().getGameActive()
         
         # Reset the scoreboard images.
         # sb.prep_score()
