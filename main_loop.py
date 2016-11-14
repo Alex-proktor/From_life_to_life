@@ -10,7 +10,6 @@ from pygame.sprite import Group
 from display_windows import Display_windows
 import Config as cfg
 from settings import Settings
-from button import Button
 import game_functions as gf
 
 PORT = int(cfg.server_connection().getPORT())              # Arbitrary non-privileged port
@@ -35,9 +34,14 @@ def run_game():
     while True:
         screen = pygame.display.set_mode(
             (Settings().screen_width, Settings().screen_height))
-        gf.check_events(screen)
+        # gf.check_events(screen)
 
-        if cfg.check_events().getGameActive() == "True":
+        if cfg.check_events().getGameActive() == "False":
+            print "Run main menu"
+            DispWind.Main()
+
+        elif cfg.check_events().getGameActive() == "True":
+            print "Run InLife"
             if start_time == 0:
                 start_time = time.time()
 
@@ -46,14 +50,12 @@ def run_game():
             # print 60 - turn_time
             print int(turn_time)
 
-            """
-            Need add Time_Button
-            """
+            DispWind.InLife(turn_time)
             # time_button = Button(Settings(), DispWind.InLife(), str(60 - turn_time))
             # time_button.draw_button()
             pygame.display.flip()
 
-        gf.update_screen(Settings(), DispWind.screen, DispWind.play_button)
+        # gf.update_screen(Settings(), DispWind.screen, DispWind.play_button)
 
         # Every 60 sec to send date server.
         if turn_time >= Sec_in_one_year:
