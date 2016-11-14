@@ -10,7 +10,6 @@ from pygame.sprite import Group
 from display_windows import Display_windows
 import Config as cfg
 from settings import Settings
-from game_stats import GameStats
 from button import Button
 import game_functions as gf
 
@@ -32,31 +31,6 @@ def run_game():
     DispWind = Display_windows()
     DispWind.Main()
 
-    # pygame.init()
-    # FLTL_settings = Settings()
-    # screen = pygame.display.set_mode(
-    #     (FLTL_settings.screen_width, FLTL_settings.screen_height))
-    # pygame.display.set_caption("FLTL")
-    #
-    # # Make the Play button.
-    # play_button = Button(FLTL_settings, screen, "Play")
-    #
-    # # Create an instance to store game statistics, and a scoreboard.
-    # stats = GameStats(FLTL_settings)
-    # # sb = Scoreboard(FLTL_settings, screen, stats)
-    #
-    # # Set the background color.
-    # bg_color = (230, 230, 230)
-    #
-    # # Make a ship, a group of bullets, and a group of aliens.
-    # # ship = Ship(FLTL_settings, screen)
-    # bullets = Group()
-    # aliens = Group()
-    #
-    # # Create the fleet of aliens.
-    # # gf.create_fleet(FLTL_settings, screen, ship, aliens)
-
-
     # Start the main loop for the game.
     while True:
         screen = pygame.display.set_mode(
@@ -75,11 +49,11 @@ def run_game():
             """
             Need add Time_Button
             """
-            time_button = Button(Settings(), DispWind.InLife(), str(60 - turn_time))
-            time_button.draw_button()
+            # time_button = Button(Settings(), DispWind.InLife(), str(60 - turn_time))
+            # time_button.draw_button()
             pygame.display.flip()
 
-        gf.update_screen(Settings(), DispWind.screen, DispWind.stats, DispWind.play_button)
+        gf.update_screen(Settings(), DispWind.screen, DispWind.play_button)
 
         # Every 60 sec to send date server.
         if turn_time >= Sec_in_one_year:

@@ -1,8 +1,8 @@
 import pygame.font
 
 class Button():
-
-    def __init__(self, FLTL_settings, screen, msg):
+    print "Class button created."
+    def __init__(self, screen, msg):
         """Initialize button attributes."""
         self.screen = screen
         self.screen_rect = screen.get_rect()
