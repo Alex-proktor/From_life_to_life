@@ -30,6 +30,10 @@ def run_game():
     DispWind = Display_windows()
     DispWind.Main()
 
+    # If the previous game was closing failed.
+    if not cfg.check_events().getGameActive() == "False":
+        cfg.check_events().setGameActive("False")
+
     # Start the main loop for the game.
     while True:
         screen = pygame.display.set_mode(
@@ -37,11 +41,9 @@ def run_game():
         # gf.check_events(screen)
 
         if cfg.check_events().getGameActive() == "False":
-            print "Run main menu"
             DispWind.Main()
 
         elif cfg.check_events().getGameActive() == "True":
-            print "Run InLife"
             if start_time == 0:
                 start_time = time.time()
 
