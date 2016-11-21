@@ -15,7 +15,8 @@ class Display_windows():
         pygame.init()
         self.FLTL_settings = Settings()
         self.screen = pygame.display.set_mode(
-            (self.FLTL_settings.screen_width, self.FLTL_settings.screen_height))
+            (self.FLTL_settings.screen_width,
+             self.FLTL_settings.screen_height))
         pygame.display.set_caption("FLTL")
 
     def sys_exit(self):
@@ -23,6 +24,16 @@ class Display_windows():
         sys.exit()
 
     def Main(self):
+        """
+        Objects:
+        enter_name - field, enter the name
+        eter_password - password field
+        registration - registration key -> Display_windows().Registration
+        server_status - indekator status of communication with server
+        play_button - go in game -> Display_windows().InLife
+        :return:
+
+        """
 
         def play_button():
             """Initialize button attributes."""
@@ -76,9 +87,76 @@ class Display_windows():
         """Update images on the screen, and flip to the new screen."""
         # Redraw the screen, each pass through the loop.
         self.screen.fill(Settings().bg_color)
-       
+
         # Make the Play button.
         rectpb = play_button()
+        check_events(rectpb)
+
+        # Make the most recently drawn screen visible.
+        if cfg.check_events().getGameActive() == "False":
+            pygame.display.flip()
+
+    def Registration(self):
+        """
+        Objects:
+        enter_name - field, enter the name
+        enter_email - input field of Email
+        eter_password - password field
+        repeat_password - repeat the password input field
+        registration - registration key -> Display_windows().Main
+        server_status - indekator status of communication with server
+        :return:
+
+        """
+        def enter_name():
+            """field, enter the name"""
+            pass
+
+        def eter_password():
+            """password field"""
+            pass
+
+        def repeat_password():
+            """repeat the password input field"""
+            pass
+
+        def registration():
+            """
+            Check all entered data for validity.
+            Sends the data to the server.
+            The server will check the entered name and uniqueness of
+                Email and returns either an error or a successful
+                registration and move to the main menu.
+            :return:
+            """
+
+            pass
+
+        def check_events(rectpb):
+            def check_play_button(rectpb, mouse_x, mouse_y):
+                """Start a new game when the player clicks Play."""
+                rectpb = pygame.Rect(rectpb)
+                button_clicked = rectpb.collidepoint(mouse_x, mouse_y)
+
+                if button_clicked and cfg.check_events().getGameActive() == "False":
+                    # Change the status of the game.
+                    cfg.check_events().setGameActive("True")
+                    print "Game run!"
+
+            """Respond to keypresses and mouse events."""
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    Display_windows.sys_exit(self)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    check_play_button(rectpb, mouse_x, mouse_y)
+
+        """Update images on the screen, and flip to the new screen."""
+        # Redraw the screen, each pass through the loop.
+        self.screen.fill(Settings().bg_color)
+
+        # Make the Play button.
+        rectpb = registration()
         check_events(rectpb)
 
         # Make the most recently drawn screen visible.
@@ -89,7 +167,7 @@ class Display_windows():
         # print "Run InLife!"
 
         def time_button(turn_time):
-            
+
             """Initialize button attributes."""
             screen_rect = self.screen.get_rect()
 
