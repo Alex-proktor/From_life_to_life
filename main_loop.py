@@ -15,7 +15,7 @@ import game_functions as gf
 
 PORT = int(cfg.server_connection().getPORT())              # Arbitrary non-privileged port
 
-Sec_in_one_year = 60
+Sec_in_one_year = 10    # must be = 60, but to debug put less
 time_out = 0.1  # Delay refresh (1 = 1 sec)
 turn_time = 0
 Data = 0
@@ -35,6 +35,7 @@ def run_game():
     while True:
         screen = pygame.display.set_mode(
             (Settings().screen_width, Settings().screen_height))
+        # next string get broken display in run game
         gf.check_events(screen)
 
         if cfg.check_events().getGameActive() == "True":
