@@ -21,7 +21,7 @@ def search_client():
 
     sock = socket.socket()
     sock.bind((HOST, PORT))   # хост, порт
-    # print u'Сервер запущен. HOST: {0}, PORT: {1}'.format(HOST, PORT)
+    print u'Сервер запущен. HOST: {0}, PORT: {1}'.format(HOST, PORT)
     sock.listen(1)  # размер очереди
     conn, addr = sock.accept()  # новый сокет и адрес клиента
 
@@ -62,3 +62,20 @@ print "Server closed the connection."
 #         return "Name - 1"
 #     else:
 #         return "No name"
+
+# спер у кого-то
+class MyTCPServer(SocketServer.TCPServer):
+    allow_reuse_address = 1
+
+    def __init__(self, host='localhost',
+                 port=9999,
+                 handler=MyTCPHandler):
+        SocketServer.TCPServer.__init__(self, (host, port), handler)
+
+
+if __name__ == "__main__":
+    HOST, PORT = "localhost", 9999
+    server = MyTCPServer(host=HOST, port=PORT, handler=MyTCPHandler)
+    # Activate the server; this will keep running until you
+    # interrupt the program with Ctrl-C
+    server.serve_forever()

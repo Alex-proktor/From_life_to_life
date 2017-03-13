@@ -9,11 +9,13 @@ import time
 import wx
 
 
-from display_windows import Display_windows
+# from display_windows import Display_windows
 import Config as cfg
+from FTP import sendData
 from settings import Settings
 from button import Button
 import game_functions as gf
+
 
 PORT = int(cfg.server_connection().getPORT())              # Arbitrary non-privileged port
 
@@ -29,12 +31,16 @@ def run_game():
     global Data
 
     start_time = 0
-    DispWind = Display_windows()
+    # DispWind = Display_windows()
 
-
+    year = 0
     # Start the main loop for the game.
     while True:
-        print "Bla"
+        # n += 1
+        print u"Запущен основной цикл - ", year
+
+        year = sendData(year)
+
     #     screen = pygame.display.set_mode(
     #         (Settings().screen_width, Settings().screen_height))
     #     # next string get broken display in run game
@@ -74,7 +80,7 @@ def run_game():
     #         sock.close()
     #
         time.sleep(time_out)
-        DispWind.MainLoop()
+        # DispWind.MainLoop()
 
 
     print "The client disconnected"
